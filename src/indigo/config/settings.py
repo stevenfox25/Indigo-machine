@@ -1,47 +1,93 @@
 from __future__ import annotations
 
+import os
+from dataclasses import dataclass
 from pathlib import Path
-from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):
-    """
-    Central configuration. Loaded from environment (and optionally a .env file).
+def _env_bool(name: str, default: bool) -> bool:
+    v = os.getenv(name)
+    if v is None:
+        return default
+    return v.strip().lower() in {"1", "true", "yes", "on"}
 
-    Key design goals:
-    - Works on dev PC and SBC
-    - Defaults safe for local dev
-    - Single place for feature flags (SIMULATION / ENABLE_UI)
-    """
 
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False,
-    )
+def _env_int(name: str, default: int) -> int:
+    v = os.getenv(name)
+    if v is None:
+        return default
+    return int(v)
 
-    # Feature flags
-    simulation: bool = True
-    enable_ui: bool = False
 
-    # Server
-    host: str = "0.0.0.0"
-    port: int = 8000
-    log_level: str = "INFO"
+def _env_float(name: str, default: float) -> float:
+    v = os.getenv(name)
+    if v is None:
+        return default
+    return float(v)
 
-    # Data storage
-    indigo_data_dir: str = "./.indigo_data"
 
-    # DB
-    database_url: str = "sqlite:///./.indigo_data/indigo.db"
-    sqlite_wal: bool = True
+def _env_csv_ints(name: str, default: list[int]) -> list[int]:
+    v = os.getenv(name)
+    if v is None or not v.strip():
+        return default
+    return [int(x.strip()) for x in v.split(",") if x.strip()]
 
-    def data_dir_path(self) -> Path:
-        return Path(self.indigo_data_dir).resolve()
+
+@dataclass(frozen=True)
+class Settings:
+    # Core toggles (keep stable for deployment)
+    ENABLE_API: bool
+    ENABLE_UI: bool
+
+    # Mode
+    SIMULATION_MODE: bool
+
+    # API
+    API_HOST: str
+    API_PORT: int
+
+    # Polling
+    POLL_HZ: float
+
+    # Addresses
+    LANE_ADDRS: tuple[int, ...]
+    UTILITY_ADDR: int
+
+    # Storage/logging
+    INDIGO_DATA_DIR: Path
+    LOG_DIR: Path
+    LOG_LEVEL: str
+
+    @staticmethod
+    def load() -> Settings:
+        """
+        Loads settings from env vars, with safe defaults.
+        """
+        data_dir = Path(os.getenv("INDIGO_DATA_DIR", ".indigo_data")).resolve()
+        log_dir = Path(os.getenv("INDIGO_LOG_DIR", str(data_dir / "logs"))).resolve()
+
+        lane_addrs = tuple(_env_csv_ints("LANE_ADDRS", [1, 2, 3, 4, 5, 6, 7, 8, 9]))
+
+        return Settings(
+            ENABLE_API=_env_bool("ENABLE_API", True),
+            ENABLE_UI=_env_bool("ENABLE_UI", False),
+            SIMULATION_MODE=_env_bool("SIMULATION_MODE", True),
+            API_HOST=os.getenv("API_HOST", "127.0.0.1"),
+            API_PORT=_env_int("API_PORT", 5000),
+            POLL_HZ=_env_float("POLL_HZ", 2.0),
+            LANE_ADDRS=lane_addrs,
+            UTILITY_ADDR=_env_int("UTILITY_ADDR", 9),
+            INDIGO_DATA_DIR=data_dir,
+            LOG_DIR=log_dir,
+            LOG_LEVEL=os.getenv("LOG_LEVEL", "INFO"),
+        )
+
+
+_SETTINGS: Settings | None = None
 
 
 def get_settings() -> Settings:
-    """
-    Factory so we have a single import path throughout the codebase.
-    """
-    return Settings()
+    global _SETTINGS
+    if _SETTINGS is None:
+        _SETTINGS = Settings.load()
+    return _SETTINGS
