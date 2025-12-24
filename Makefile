@@ -40,6 +40,9 @@ snapshot:
 	@git ls-files | rg "src/indigo/(api|services|hw|db)"
 	@echo
 	@echo "================================================="
+	@echo "GIT DIFF (Status):"
+	@git diff --stat
+	@echo "================================================="
 
 
 snapshot-file:

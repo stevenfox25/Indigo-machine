@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 

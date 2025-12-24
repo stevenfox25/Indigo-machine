@@ -1,9 +1,6 @@
 # tools/snapshot_core_imports.py
 
 def main():
-    import indigo
-    from indigo.api.app import create_app
-    from indigo.services.runner import run_services
 
     print("=== CORE IMPORTS SNAPSHOT ===")
     print("indigo: OK")

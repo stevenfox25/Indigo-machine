@@ -2,6 +2,7 @@
 
 from indigo.config.settings import get_settings
 
+
 def main():
     s = get_settings()
     print("=== SETTINGS SNAPSHOT ===")

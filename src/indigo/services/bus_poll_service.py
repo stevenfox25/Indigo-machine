@@ -5,11 +5,11 @@ import threading
 import time
 
 from indigo.config.settings import get_settings
-from indigo.hw.devices import LaneboardClient, UtilityBoardClient
-from indigo.services.device_registry import DeviceRegistry
 
 # Import bus types lazily-ish, but still type-safe enough for runtime.
 from indigo.hw.bus.sim_bus import SimBus
+from indigo.hw.devices import LaneboardClient, UtilityBoardClient
+from indigo.services.device_registry import DeviceRegistry
 
 
 class BusPollService:

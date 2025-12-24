@@ -4,7 +4,6 @@ from dataclasses import dataclass
 
 from indigo.hw.protocol.codec import Frame
 
-
 # ----------------------------
 # Message / Response Types
 # ----------------------------
