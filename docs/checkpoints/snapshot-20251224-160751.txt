@@ -1,0 +1,123 @@
+make[1]: Entering directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-machine'
+"================ Indigo Snapshot ================"
+ECHO is off.
+"GIT STATUS:"
+ M .env.example
+ M Makefile
+ M src/indigo/api/app.py
+ M src/indigo/config/settings.py
+ M src/indigo/db/engine.py
+ M src/indigo/db/orm/tables.py
+?? .indigo_data/
+?? docs/checkpoints/snapshot-20251224-160313.txt
+?? docs/checkpoints/snapshot-20251224-160751.txt
+?? src/indigo/api/blueprints/recipes.py
+?? src/indigo/services/recipe_service.py
+?? src/indigo/services/recipe_store.py
+?? tests/unit/
+?? tools/post_recipe_lane1.py
+ECHO is off.
+"GIT BRANCH / COMMIT:"
+main
+d9e37bb
+ECHO is off.
+"TRACKED CORE FILES:"
+src/indigo/api/__init__.py
+src/indigo/api/app.py
+src/indigo/api/blueprints/__init__.py
+src/indigo/api/blueprints/devices.py
+src/indigo/api/blueprints/health.py
+src/indigo/api/blueprints/lanes.py
+src/indigo/db/__init__.py
+src/indigo/db/base.py
+src/indigo/db/engine.py
+src/indigo/db/orm/__init__.py
+src/indigo/db/orm/tables.py
+src/indigo/hw/__init__.py
+src/indigo/hw/bus/__init__.py
+src/indigo/hw/bus/base.py
+src/indigo/hw/bus/sim_bus.py
+src/indigo/hw/devices/__init__.py
+src/indigo/hw/devices/laneboard.py
+src/indigo/hw/devices/utilityboard.py
+src/indigo/hw/protocol/__init__.py
+src/indigo/hw/protocol/codec.py
+src/indigo/hw/transport/__init__.py
+src/indigo/hw/transport/base.py
+src/indigo/hw/transport/sim.py
+src/indigo/services/__init__.py
+src/indigo/services/bus_poll_service.py
+src/indigo/services/cycle_runner.py
+src/indigo/services/device_registry.py
+src/indigo/services/lane_service.py
+src/indigo/services/runner.py
+src/indigo/services/system_state.py
+ECHO is off.
+"================================================="
+"GIT DIFF (Status):"
+ .env.example                  | 13 ++++--
+ Makefile                      |  3 ++
+ src/indigo/api/app.py         | 21 +++++-----
+ src/indigo/config/settings.py | 49 ++++++++++++++++++++++-
+ src/indigo/db/engine.py       | 61 ++++++++++------------------
+ src/indigo/db/orm/tables.py   | 93 +++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 186 insertions(+), 54 deletions(-)
+"================================================="
+make[1]: Leaving directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-machine'
+make[1]: Entering directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-machine'
+uv run ruff check .
+I001 [*] Import block is un-sorted or un-formatted
+  --> src\indigo\api\app.py:1:1
+   |
+ 1 | / from __future__ import annotations
+ 2 | |
+ 3 | | import logging
+ 4 | |
+ 5 | | from flask import Flask, jsonify
+ 6 | |
+ 7 | | from indigo.config.settings import get_settings
+ 8 | | from indigo.api.blueprints.health import bp as health_bp
+ 9 | | from indigo.api.blueprints.devices import bp as devices_bp
+10 | | from indigo.api.blueprints.lanes import bp as lanes_bp
+11 | | from indigo.api.blueprints.recipes import bp as recipes_bp  # NEW
+   | |__________________________________________________________^
+   |
+help: Organize imports
+
+UP037 [*] Remove quotes from type annotation
+  --> src\indigo\db\orm\tables.py:56:33
+   |
+55 |     # Children
+56 |     pinbreak_steps: Mapped[list["RecipePinBreakStep"]] = relationship(
+   |                                 ^^^^^^^^^^^^^^^^^^^^
+57 |         back_populates="recipe",
+58 |         cascade="all, delete-orphan",
+   |
+help: Remove quotes
+
+F401 [*] `sqlalchemy.orm.Session` imported but unused
+ --> src\indigo\services\recipe_service.py:6:28
+  |
+4 | from typing import Any
+5 |
+6 | from sqlalchemy.orm import Session
+  |                            ^^^^^^^
+7 |
+8 | from indigo.db.orm.tables import Recipe, RecipePinBreakStep
+  |
+help: Remove unused import: `sqlalchemy.orm.Session`
+
+I001 [*] Import block is un-sorted or un-formatted
+ --> tools\post_recipe_lane1.py:1:1
+  |
+1 | / from __future__ import annotations
+2 | |
+3 | | import json
+4 | | import urllib.request
+  | |_____________________^
+  |
+help: Organize imports
+
+Found 4 errors.
+[*] 4 fixable with the `--fix` option.
+make[1]: Leaving directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-machine'

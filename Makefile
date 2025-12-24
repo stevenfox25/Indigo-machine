@@ -26,6 +26,9 @@ test:
 clean:
 	rm -rf .venv .pytest_cache .ruff_cache .indigo_data uv.lock
 
+post_recipe_test:
+	$(UV) run python tools\post_recipe_lane1.py
+
 snapshot:
 	@echo "================ Indigo Snapshot ================"
 	@echo

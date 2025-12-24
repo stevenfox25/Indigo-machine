@@ -5,6 +5,35 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
+def _load_dotenv_file(path: Path) -> None:
+    """
+    Minimal .env loader (no dependency).
+    - ignores blank lines and comments (# ...)
+    - supports KEY=VALUE (VALUE may be quoted)
+    - does NOT override existing environment variables
+    """
+    if not path.exists():
+        return
+
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "=" not in line:
+            continue
+
+        k, v = line.split("=", 1)
+        key = k.strip()
+        val = v.strip()
+
+        # strip surrounding quotes
+        if (val.startswith('"') and val.endswith('"')) or (val.startswith("'") and val.endswith("'")):
+            val = val[1:-1]
+
+        # don't override already-set env vars
+        os.environ.setdefault(key, val)
+
+
 def _env_bool(name: str, default: bool) -> bool:
     v = os.getenv(name)
     if v is None:
@@ -30,7 +59,10 @@ def _env_csv_ints(name: str, default: list[int]) -> list[int]:
     v = os.getenv(name)
     if v is None or not v.strip():
         return default
-    return [int(x.strip()) for x in v.split(",") if x.strip()]
+
+    # tolerate formats like "1,2,3" or "[1,2,3]"
+    cleaned = v.strip().strip("[](){}")
+    return [int(x.strip()) for x in cleaned.split(",") if x.strip()]
 
 
 @dataclass(frozen=True)
@@ -58,15 +90,26 @@ class Settings:
     LOG_DIR: Path
     LOG_LEVEL: str
 
+    # Database
+    DATABASE_URL: str
+    SQLITE_WAL: bool
+
     @staticmethod
     def load() -> Settings:
         """
-        Loads settings from env vars, with safe defaults.
+        Loads settings from:
+          1) OS env vars
+          2) .env file (if present) for missing vars only
         """
+        _load_dotenv_file(Path(".env"))
+
         data_dir = Path(os.getenv("INDIGO_DATA_DIR", ".indigo_data")).resolve()
         log_dir = Path(os.getenv("INDIGO_LOG_DIR", str(data_dir / "logs"))).resolve()
 
         lane_addrs = tuple(_env_csv_ints("LANE_ADDRS", [1, 2, 3, 4, 5, 6, 7, 8, 9]))
+
+        # Default DB path under INDIGO_DATA_DIR if not specified
+        default_db = f"sqlite:///{(data_dir / 'indigo.db').as_posix()}"
 
         return Settings(
             ENABLE_API=_env_bool("ENABLE_API", True),
@@ -80,6 +123,8 @@ class Settings:
             INDIGO_DATA_DIR=data_dir,
             LOG_DIR=log_dir,
             LOG_LEVEL=os.getenv("LOG_LEVEL", "INFO"),
+            DATABASE_URL=os.getenv("DATABASE_URL", default_db),
+            SQLITE_WAL=_env_bool("SQLITE_WAL", True),
         )
 
 
