@@ -2,40 +2,13 @@ make[1]: Entering directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-mach
 "================ Indigo Snapshot ================"
 ECHO is off.
 "GIT STATUS:"
-M  Makefile
-A  docs/ARCHITECTURE.md
-A  docs/CHECKPOINTS.md
-M  src/indigo/api/app.py
-M  src/indigo/api/blueprints/__init__.py
-A  src/indigo/api/blueprints/devices.py
-M  src/indigo/api/blueprints/health.py
-A  src/indigo/api/blueprints/lanes.py
-M  src/indigo/config/settings.py
-A  src/indigo/hw/bus/__init__.py
-A  src/indigo/hw/bus/base.py
-A  src/indigo/hw/bus/sim_bus.py
-A  src/indigo/hw/devices/__init__.py
-A  src/indigo/hw/devices/laneboard.py
-A  src/indigo/hw/devices/utilityboard.py
-A  src/indigo/hw/protocol/__init__.py
-A  src/indigo/hw/protocol/codec.py
-M  src/indigo/hw/transport/base.py
-M  src/indigo/hw/transport/sim.py
-A  src/indigo/services/bus_poll_service.py
-A  src/indigo/services/cycle_runner.py
-A  src/indigo/services/device_registry.py
-A  src/indigo/services/lane_service.py
-M  src/indigo/services/runner.py
-A  src/indigo/services/system_state.py
-A  tests/integration/test_devices_smoke.py
-A  tests/integration/test_health.py
-A  tools/snapshot_core_imports.py
-A  tools/snapshot_settings.py
-?? docs/checkpoints/
+ M Makefile
+ D docs/checkpoints/snapshot-20251224-140700.txt
+?? docs/checkpoints/snapshot-20251224-145026.txt
 ECHO is off.
 "GIT BRANCH / COMMIT:"
 main
-57b1c97
+1cf4bfc
 ECHO is off.
 "TRACKED CORE FILES:"
 src/indigo/api/__init__.py
@@ -69,6 +42,11 @@ src/indigo/services/lane_service.py
 src/indigo/services/runner.py
 src/indigo/services/system_state.py
 ECHO is off.
+"================================================="
+"GIT DIFF (Status):"
+ Makefile                                      |  2 +
+ docs/checkpoints/snapshot-20251224-140700.txt | 82 ---------------------------
+ 2 files changed, 2 insertions(+), 82 deletions(-)
 "================================================="
 make[1]: Leaving directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-machine'
 === SETTINGS SNAPSHOT ===

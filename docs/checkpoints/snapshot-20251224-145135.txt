@@ -1,0 +1,69 @@
+make[1]: Entering directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-machine'
+"================ Indigo Snapshot ================"
+ECHO is off.
+"GIT STATUS:"
+ M Makefile
+ D docs/checkpoints/snapshot-20251224-140700.txt
+?? docs/checkpoints/snapshot-20251224-145135.txt
+ECHO is off.
+"GIT BRANCH / COMMIT:"
+main
+1cf4bfc
+ECHO is off.
+"TRACKED CORE FILES:"
+src/indigo/api/__init__.py
+src/indigo/api/app.py
+src/indigo/api/blueprints/__init__.py
+src/indigo/api/blueprints/devices.py
+src/indigo/api/blueprints/health.py
+src/indigo/api/blueprints/lanes.py
+src/indigo/db/__init__.py
+src/indigo/db/base.py
+src/indigo/db/engine.py
+src/indigo/db/orm/__init__.py
+src/indigo/db/orm/tables.py
+src/indigo/hw/__init__.py
+src/indigo/hw/bus/__init__.py
+src/indigo/hw/bus/base.py
+src/indigo/hw/bus/sim_bus.py
+src/indigo/hw/devices/__init__.py
+src/indigo/hw/devices/laneboard.py
+src/indigo/hw/devices/utilityboard.py
+src/indigo/hw/protocol/__init__.py
+src/indigo/hw/protocol/codec.py
+src/indigo/hw/transport/__init__.py
+src/indigo/hw/transport/base.py
+src/indigo/hw/transport/sim.py
+src/indigo/services/__init__.py
+src/indigo/services/bus_poll_service.py
+src/indigo/services/cycle_runner.py
+src/indigo/services/device_registry.py
+src/indigo/services/lane_service.py
+src/indigo/services/runner.py
+src/indigo/services/system_state.py
+ECHO is off.
+"================================================="
+"GIT DIFF (Status):"
+ Makefile                                      |  2 +
+ docs/checkpoints/snapshot-20251224-140700.txt | 82 ---------------------------
+ 2 files changed, 2 insertions(+), 82 deletions(-)
+"================================================="
+make[1]: Leaving directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-machine'
+make[1]: Entering directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-machine'
+uv run ruff check .
+All checks passed!
+make[1]: Leaving directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-machine'
+make[1]: Entering directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-machine'
+uv run pytest
+..                                                                       [100%]
+2 passed in 0.21s
+make[1]: Leaving directory 'C:/Users/steven.fox/Documents/git_repos/Indigo-machine'
+=== SETTINGS SNAPSHOT ===
+ENABLE_API=True
+ENABLE_UI=False
+SIMULATION_MODE=True
+POLL_HZ=2.0
+=== CORE IMPORTS SNAPSHOT ===
+indigo: OK
+create_app: OK
+run_services: OK

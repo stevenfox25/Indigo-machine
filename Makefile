@@ -47,6 +47,8 @@ snapshot:
 
 snapshot-file:
 	@make snapshot > docs\checkpoints\$(SNAPSHOT_FILE)
+	@make lint >> docs\checkpoints\$(SNAPSHOT_FILE)
+	@make test >> docs\checkpoints\$(SNAPSHOT_FILE)
 	@$(UV) run python tools\snapshot_settings.py >> docs\checkpoints\$(SNAPSHOT_FILE)
 	@$(UV) run python tools\snapshot_core_imports.py >> docs\checkpoints\$(SNAPSHOT_FILE)
 	@echo "Snapshot written to docs\checkpoints\$(SNAPSHOT_FILE)
